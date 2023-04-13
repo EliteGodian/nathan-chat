@@ -83,7 +83,23 @@ const DOM = {
 };
 
 DOM.form.addEventListener('submit', sendMessage);
+var keyEnum = { W_Key: 0, A_Key: 1, S_Key: 2, D_Key: 3 };
+var keyArray = new Array(4);
 
+const is_key_down = (() => {
+  const state = {};
+
+  window.addEventListener('keyup', (e) => state[e.key] = false);
+  window.addEventListener('keydown', (e) => state[e.key] = true);
+
+  return (key) => state.hasOwnProperty(key) && state[key] || false;
+})();
+window.setInterval(function() {
+  if (!(is_key_down('ArrowLeft'))) {
+    var elem = DOM.messages;
+    elem.scrollTop = elem.scrollHeight;
+  }
+}, 500);
 function sendMessage() {
   const value = DOM.input.value;
   if (value === '') {
